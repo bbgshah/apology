@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fff0f5">
 <title>I'm Sorry, Daina</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -241,6 +242,31 @@ footer{text-align:center;margin-top:36px;font-size:.9rem;opacity:.75}
 .d1{width:16px;height:16px;animation-delay:.5s}.d2{width:11px;height:11px;animation-delay:.25s}.d3{width:7px;height:7px;animation-delay:0s}
 @keyframes tpop{from{transform:scale(0);opacity:0}to{transform:none;opacity:1}}
 @keyframes tbob{50%{transform:translateY(-6px)}}
+
+/* mobile */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overscroll-behavior-y:contain}
+body{overscroll-behavior-y:contain;-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+body.locked{height:100dvh}
+#p2,#p3,#p4{padding:calc(24px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(90px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.cord2{left:max(10px,env(safe-area-inset-left,0px))}
+.skip{left:max(12px,env(safe-area-inset-left,0px))}
+.bg i{will-change:transform}
+.scare{min-height:44px;padding:10px 8px}
+@media(max-width:480px){
+main{padding:20px 16px 48px}
+.letter{padding:22px 18px}
+.card{font-size:1.1rem;padding:20px 18px}
+.ask h2{font-size:1.45rem}
+.btns{flex-direction:column}
+button.act{width:100%;max-width:300px;min-height:50px}
+.done{padding:22px 18px;margin-top:24px}
+.gate-text small{font-size:.95rem}
+}
+@media(max-height:480px){
+.thought{bottom:calc(230px + env(safe-area-inset-bottom,0px))}
+.bubble{font-size:.95rem;padding:10px 16px}
+}
 </style>
 </head>
 <body class="locked">
@@ -346,7 +372,7 @@ const $=id=>document.getElementById(id), body=document.body;
 
 // floating background bits
 const bg=$('bg'), cols=['#ffb3cb','#ff8fb0','#f7a8c4','#e8628a','#e3b5c5'];
-for(let i=0;i<14;i++){const e=document.createElement('i'),w=26+Math.random()*30,c=cols[i%5];
+for(let i=0,nb=innerWidth<600?8:14;i<nb;i++){const e=document.createElement('i'),w=26+Math.random()*30,c=cols[i%5];
   e.innerHTML='<svg viewBox="0 0 40 26" width="'+w+'" height="'+w*.65+'"><path d="M2 3 L19 13 L2 23Z M38 3 L21 13 L38 23Z" fill="'+c+'" stroke="#7a3550" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="8" width="8" height="10" rx="3" fill="'+c+'" stroke="#7a3550" stroke-width="2"/></svg>';
   e.style.left=Math.random()*100+'%';
   e.style.animationDuration=(9+Math.random()*10)+'s';e.style.animationDelay=(-Math.random()*14)+'s';bg.appendChild(e)}
@@ -501,7 +527,8 @@ async function catPull(front,kind,reveal,cleanup){
   const lerp=(a,b,k)=>a+(b-a)*k;
   btn.addEventListener('click',async()=>{
     if(busy)return;busy=true;btn.disabled=true;skip=false;
-    const W=innerWidth,H=innerHeight,gy=H-216,cx=W/2-75,y0=Math.round(H*.38);
+    const sb=parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0;
+    const W=innerWidth,H=innerHeight,gy=H-216-sb,cx=W/2-75,y0=Math.round(H*.38);
     const side=Math.random()<.5?-1:1;
     const peekX=side>0?W-64:-86, offX=side>0?W+10:-160;
     // 1. pokes her head out from the side
