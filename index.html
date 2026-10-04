@@ -222,6 +222,25 @@ footer{text-align:center;margin-top:36px;font-size:.9rem;opacity:.75}
 .walker.cheer .bd{animation:hop .5s ease-out 2}
 @keyframes hop{0%,100%{transform:none}45%{transform:translateY(-30px)}}
 .walker.cheer .eo,.walker.cheer .mS{display:none}.walker.cheer .eh,.walker.cheer .mO{display:inline}
+
+/* jumpscare */
+.scare{border:0;background:none;padding:6px 4px;font-family:'Fredoka',sans-serif;font-size:1.15rem;color:var(--deep);text-decoration:underline wavy var(--pink);text-underline-offset:6px;cursor:pointer;transition:opacity .3s}
+.scare:disabled{opacity:0;pointer-events:none}
+.walker.boo .mS{display:none}.walker.boo .mO{display:inline}
+.walker.boo .armL{transform:rotate(150deg)}.walker.boo .armR{transform:rotate(-150deg)}
+.walker.boo .eo{transform-box:fill-box;transform-origin:center;transform:scale(1.4)}
+.walker.boo .bd{animation:strn .08s linear infinite}
+.dim{position:fixed;inset:0;z-index:28;background:#14040b;opacity:0;pointer-events:none;transition:opacity .12s}
+.dim.on{opacity:.62}
+.boo-txt{position:fixed;z-index:32;left:50%;top:30%;transform:translate(-50%,-50%) scale(.2);opacity:0;pointer-events:none;font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(3rem,16vw,6.5rem);color:#ff3d78;text-shadow:0 5px 0 #fff,0 0 30px rgba(0,0,0,.5);letter-spacing:.04em;white-space:nowrap;transition:transform .2s cubic-bezier(.2,1.8,.4,1),opacity .15s}
+.boo-txt.on{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-4deg)}
+.thought{position:fixed;z-index:33;left:50%;bottom:calc(240px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(280px,82vw);display:flex;flex-direction:column;align-items:center}
+.thought[hidden]{display:none}
+.bubble{border:0;background:var(--card);color:var(--deep);font-family:'Fredoka',sans-serif;font-size:1.05rem;line-height:1.3;padding:14px 20px;border-radius:30px;box-shadow:0 5px 0 var(--pink),0 10px 24px var(--shadow);cursor:pointer;animation:tpop .5s .8s cubic-bezier(.3,1.6,.5,1) both,tbob 2s 1.4s ease-in-out infinite}
+.d{display:block;border-radius:50%;background:var(--card);box-shadow:0 3px 0 var(--pink);margin-top:7px;animation:tpop .35s both cubic-bezier(.3,1.6,.5,1)}
+.d1{width:16px;height:16px;animation-delay:.5s}.d2{width:11px;height:11px;animation-delay:.25s}.d3{width:7px;height:7px;animation-delay:0s}
+@keyframes tpop{from{transform:scale(0);opacity:0}to{transform:none;opacity:1}}
+@keyframes tbob{50%{transform:translateY(-6px)}}
 </style>
 </head>
 <body class="locked">
@@ -258,6 +277,8 @@ footer{text-align:center;margin-top:36px;font-size:.9rem;opacity:.75}
 </svg></div>
 <div class="flap" id="flap" aria-hidden="true"><div class="fl" id="fl"></div></div>
 <button class="skip" id="skip" hidden>skip</button>
+<div class="dim" id="dim" aria-hidden="true"></div><div class="boo-txt" id="booTxt" aria-hidden="true">BOOOO!</div>
+<div class="thought" id="thought" hidden><button type="button" class="bubble" id="again">Click here for another scary jumpscare :0</button><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i></div>
 <div class="photo" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div>
 <div class="bg" id="bg" aria-hidden="true"></div>
 
@@ -315,7 +336,7 @@ footer{text-align:center;margin-top:36px;font-size:.9rem;opacity:.75}
 
   <section class="done" id="done" aria-live="polite">
     <h2>Yay! Thank you, Daina ♡</h2>
-    <p>Dessert is on me. Text me when you're free.</p>
+    <p><button class="scare" id="scare" type="button">Click here for a scary jumpscare :0</button></p>
   </section>
   </div>
 </main>
@@ -469,6 +490,47 @@ async function catPull(front,kind,reveal,cleanup){
   lock.addEventListener('contextmenu',e=>e.preventDefault());
   lock.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!e.repeat){e.preventDefault();down()}});
   lock.addEventListener('keyup',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();up()}});
+})();
+
+// jumpscare
+(function(){
+  const btn=$('scare'),w=$('walker'),dim=$('dim'),boo=$('booTxt'),th=$('thought');
+  const TO='ouushii998@gmail.com';
+  let busy=false;
+  const put=(x,y,s,f)=>{w.style.transition='none';w.style.transform='translate('+x+'px,'+y+'px) scale('+(f*s)+','+s+')'};
+  const lerp=(a,b,k)=>a+(b-a)*k;
+  btn.addEventListener('click',async()=>{
+    if(busy)return;busy=true;btn.disabled=true;skip=false;
+    const W=innerWidth,H=innerHeight,gy=H-216,cx=W/2-75,y0=Math.round(H*.38);
+    const side=Math.random()<.5?-1:1;
+    const peekX=side>0?W-64:-86, offX=side>0?W+10:-160;
+    // 1. pokes her head out from the side
+    w.className='walker go look';w.style.opacity=1;put(offX,y0,1,side);void w.offsetWidth;
+    await tween(550,k=>put(lerp(offX,peekX,k),y0,1,side),E.io);
+    await sleep(1100);
+    // 2. jumps to the bottom of the screen
+    w.className='walker go walk';
+    await tween(900,e=>put(lerp(peekX,cx,e),lerp(y0,gy,e)-Math.sin(Math.PI*e)*H*.16,1,lerp(side,1,e)),E.io);
+    await sleep(250);
+    // 3. BOOOO!
+    w.className='walker go boo';dim.classList.add('on');boo.classList.add('on');
+    navigator.vibrate&&navigator.vibrate([80,40,120]);
+    await tween(220,k=>put(cx,gy,1+1.1*k,1),E.ei);
+    await sleep(1200);
+    boo.classList.remove('on');dim.classList.remove('on');
+    await tween(350,k=>put(cx,gy,2.1-1.1*k,1),E.io);
+    // 4. thinking: thought bubble comes out of her head
+    w.className='walker go look';
+    th.hidden=false;
+  });
+  function openGmail(){
+    const ua=navigator.userAgent;
+    const ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    if(ios){location.href='googlegmail:///co?to='+TO;setTimeout(()=>{if(!document.hidden)location.href='mailto:'+TO},1200)}
+    else if(/Android/.test(ua)){location.href='mailto:'+TO}
+    else window.open('https://mail.google.com/mail/?view=cm&fs=1&to='+TO,'_blank');
+  }
+  $('again').addEventListener('click',openGmail);
 })();
 </script>
 </body>
