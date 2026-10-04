@@ -286,6 +286,33 @@ button.act{width:100%;max-width:300px;min-height:50px}
 .lock .lbl{font-size:1.15rem;padding:6px 14px}
 #p2 .cat{width:min(180px,48vw)}
 }
+
+/* slide 3 aside + quicker head scan */
+.aside{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));text-align:center;padding:0 24px;font-family:'Quicksand','Trebuchet MS',sans-serif;font-size:.85rem;line-height:1.4;color:#a9808f;opacity:0;transform:translateY(24px);pointer-events:none;z-index:5}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .aside{color:#b98fa1}}
+:root[data-theme="dark"] .aside{color:#b98fa1}
+.aside.in{animation:asideIn .6s ease forwards}
+.aside.out{animation:asideOut .8s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes asideIn{to{opacity:1;transform:none}}
+@keyframes asideOut{from{opacity:1;transform:none}to{opacity:1;transform:translateY(140px)}}
+
+/* placeholders shown on the page underneath while the cat pulls */
+.skel{display:none}
+#p3.pend .skel,#p4.pend .skel{display:block}
+#p3.pend .q,#p3.pend .cards,#p4.pend #p4cat,#p4.pend .ask{display:none}
+.shd{margin:30px auto 26px;display:grid;gap:10px;justify-items:center}
+.shd i{display:block;height:2rem;border-radius:99px;background:var(--soft);animation:skp 1.4s ease-in-out infinite}
+.shd i:nth-child(1){width:84%}.shd i:nth-child(2){width:52%}
+.scs{display:grid;gap:22px;max-width:480px;margin:0 auto}
+.sc{background:var(--card);border-radius:22px;padding:24px 22px;box-shadow:0 6px 0 var(--pink);display:grid;gap:10px;justify-items:center}
+.sc b{display:block;height:.9rem;width:70%;border-radius:99px;background:var(--soft);animation:skp 1.4s ease-in-out infinite}
+.sc b:nth-child(2){width:45%}
+.skc{display:block;width:min(170px,50vw);height:min(146px,43vw);margin:0 auto;border-radius:50%/46%;background:var(--card);box-shadow:0 6px 0 var(--pink)}
+.skq i{display:block;width:70%;max-width:340px;height:1.7rem;margin:34px auto 0;border-radius:99px;background:var(--soft);animation:skp 1.4s ease-in-out infinite}
+.skb{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.skb i{display:block;width:170px;height:52px;border-radius:99px;background:var(--card);box-shadow:0 5px 0 var(--pink)}
+@keyframes skp{50%{opacity:.55}}
+@media(max-width:480px){.skb{flex-direction:column;align-items:center}.skb i{width:100%;max-width:300px;height:50px}}
 </style>
 </head>
 <body class="locked">
@@ -359,24 +386,27 @@ button.act{width:100%;max-width:300px;min-height:50px}
     <div class="body">
       <h2>Hellu, Daina!</h2>
       <p>I know that I did something which you didn't like and you decided to stop talking with me that day. But I truly and from the bottom of my heart, am sorry for anything and everything I did which made you mad to that point. I really just care about only few replies a day and I dont have any bad intentions towards you, you have been acting a lil rude towards me and would stop talking more often and that's the only and primary reason why I even bought that up in the first place, I thought I can tell you that without questioning but if you dont like that that's completely okay and I will continue to remember that. I realise it's my fault and I should be careful with what I do, and I will, with no doubt from now be careful because I will make sure to not do anything which raises doubts on your side.</p>
-      <p>With that being said, I am asking for forgiveness, I will really be delighted and it will brighten my days ( which are going pretty bad :') if you can take just some time out of your busy schedule to review my apology application, and maybe accept it too :))))</p>
+      <p>With that being said, I am asking for forgiveness, I will really be delighted and it will brighten my days ( which are going pretty bad :[ ) if you can take just some time out of your busy schedule to review my apology application, and maybe accept it too :))))</p>
     </div>
     </div>
   </article>
 
   </div>
-  <div id="p3" hidden>
+  <div id="p3" class="pend" hidden>
+    <div class="skel" id="sk3" aria-hidden="true"><div class="shd"><i></i><i></i></div><div class="scs"><div class="sc"><b></b></div><div class="sc"><b></b><b></b></div><div class="sc"><b></b></div></div></div>
     <h1 class="q">So what does this Apology mean?</h1>
     <div class="cards">
-      <div class="card c1">I'm sorry to you for the inconvenience</div>
+      <div class="card c1">I'm sorry to you</div>
       <div class="card c2">I promise to never repeat it, and to not make you mad</div>
       <div class="c3"><div class="card cut1">I want a reply ;)</div><div class="card cut2" aria-hidden="true">I want a reply ;)</div></div>
     </div>
+    <div class="aside" id="aside">And incase you dont like me, like me... as an acquaintance</div>
   </div>
-  <div id="p4" hidden>
+  <div id="p4" class="pend" hidden>
+  <div class="skel" id="sk4" aria-hidden="true"><i class="skc"></i><div class="skq"><i></i></div><div class="skb"><i></i><i></i></div></div>
   <div id="p4cat"></div>
   <section class="ask" id="ask">
-    <h2>Do you forgive me?</h2>
+    <h2>Can we be friends again?</h2>
     <div class="btns">
       <button class="act yes" id="yes">Yes, I forgive you</button>
       <button class="act no" id="no">Not yet</button>
@@ -408,7 +438,7 @@ function prog(v){sp.style.setProperty('--p',Math.max(0,Math.min(1,v)))}
 function openUp(){
   if(opened)return; opened=true; sp.classList.add('snap'); prog(1);
   line.style.height=(base+need)+'px';
-  catPull($('curtains'),'curtain',()=>{body.classList.add('open');body.classList.remove('locked')},()=>{$('curtains').style.display='none'});
+  catPull($('curtains'),'curtain',()=>{body.classList.add('open');body.classList.remove('locked')},()=>{$('curtains').style.display='none'},true);
 }
 cord.addEventListener('pointerdown',e=>{if(opened)return;dragging=true;startY=e.clientY;cord.classList.add('drag');cord.classList.remove('snap');sp.classList.remove('snap');cord.setPointerCapture(e.pointerId)});
 cord.addEventListener('pointermove',e=>{if(!dragging)return;dy=Math.max(0,Math.min(160,e.clientY-startY));line.style.height=(base+dy)+'px';prog(dy/(need*.8))});
@@ -430,7 +460,7 @@ addEventListener('pointermove',e=>{const r=$('cat').getBoundingClientRect();
 
 // no button
 const no=$('no');let tries=0;
-const msgs=['Not yet','Please?','Pretty please?','You mean yes?','Okay, just click yes'];
+const msgs=['Not yet','Please?','Pretty please?','I\u2019ll bring snacks','Okay, just click yes'];
 no.addEventListener('click',()=>{tries++;no.textContent=msgs[Math.min(tries,4)];$('yes').style.transform='scale('+Math.min(1+tries*.12,1.6)+')'});
 
 // yes
@@ -461,7 +491,7 @@ function setFold(front,t){
   fl.style.clipPath=polyStr(bk);
   return P;
 }
-async function catPull(front,kind,reveal,cleanup){
+async function catPull(front,kind,reveal,cleanup,noskip){
   skip=false;
   const w=$('walker'),mk=$('mk'),fl=$('fl'),sk=$('skip');
   const W=innerWidth,H=innerHeight,gy=H-216,cx=W/2-75;
@@ -469,7 +499,7 @@ async function catPull(front,kind,reveal,cleanup){
   const mark=t=>{mk.textContent=t||'';w.classList.toggle('m',!!t)};
   const place=(x,y,s,ms,op)=>{w.style.transition=ms?'transform '+ms+'ms cubic-bezier(.4,.1,.3,1),opacity '+ms+'ms':'none';w.style.transform='translate('+x+'px,'+y+'px) scale('+s+')';if(op!=null)w.style.opacity=op};
   const follow=P=>place(P[0]-125,gy,1,0);
-  w.className='walker go';fl.className='fl '+kind;fl.style.clipPath='polygon(0 0,0 0,0 0)';sk.hidden=false;
+  w.className='walker go';fl.className='fl '+kind;fl.style.clipPath='polygon(0 0,0 0,0 0)';sk.hidden=!!noskip;
   sk.onclick=()=>{skip=true};
   // 1. steps out of the middle of the screen, towards the viewer
   place(cx,H/2-210,.2,0,0);void w.offsetWidth;
@@ -500,16 +530,17 @@ async function catPull(front,kind,reveal,cleanup){
   const c=$('cord2'), ln=$('line2'), hint=$('hint2'), p2=$('p2'), p3=$('p3'), p4=$('p4'), base=70, need=110;
   let y0=0, d=0, drag=false, done=false, stage=2;
   const cur=()=>stage===2?p2:p3;
+  function showAside(){const a=$('aside');setTimeout(()=>{a.classList.add('in');setTimeout(()=>{a.classList.remove('in');a.classList.add('out')},4000)},3300)}
   function fade(v){cur().style.opacity=1-Math.max(0,Math.min(1,v))*.55}
   function resetCord(){done=false;ln.style.height=base+'px';hint.style.opacity=1;hint.style.transform='translateX(-50%) scale(1)'}
   function go(){
     if(done)return; done=true; ln.style.height=(base+need)+'px'; body.classList.remove('stage2');
     const from=cur(); from.style.opacity='';
     const reveal=()=>{
-      if(stage===2){p3.hidden=false;p3.scrollTop=0;p3.classList.add('in3')}
-      else{const k=$('cat').cloneNode(true);k.removeAttribute('id');$('p4cat').appendChild(k);p4.hidden=false;p4.scrollTop=0;p4.classList.add('in')}
+      if(stage===2){p3.hidden=false;p3.scrollTop=0}
+      else{p4.hidden=false;p4.scrollTop=0}
     };
-    catPull(from,'paper',reveal,()=>{from.hidden=true;if(stage===2){stage=3;resetCord();setTimeout(()=>body.classList.add('stage2'),2500)}});
+    catPull(from,'paper',reveal,()=>{from.hidden=true;if(stage===2){stage=3;resetCord();p3.classList.remove('pend');p3.classList.add('in3');showAside();setTimeout(()=>body.classList.add('stage2'),2500)}else{p4.classList.remove('pend');const k=$('cat').cloneNode(true);k.removeAttribute('id');$('p4cat').appendChild(k);p4.classList.add('in')}},true);
   }
   c.addEventListener('pointerdown',e=>{if(done)return;drag=true;y0=e.clientY;c.classList.add('drag');c.classList.remove('snap');c.setPointerCapture(e.pointerId)});
   c.addEventListener('pointermove',e=>{if(!drag)return;d=Math.max(0,Math.min(160,e.clientY-y0));ln.style.height=(base+d)+'px';fade(d/(need*.8));const h=Math.min(1,d/50);hint.style.opacity=1-h;hint.style.transform='translateX(-50%) scale('+(1-.3*h)+')'});
