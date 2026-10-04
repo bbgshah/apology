@@ -144,7 +144,7 @@ footer{text-align:center;margin-top:36px;font-size:.9rem;opacity:.75}
 .paw text{font-family:'Fredoka',sans-serif;font-weight:600;font-size:8.6px;fill:#fff;opacity:0;transition:opacity .9s ease}
 .paw.win text{opacity:1}
 .letter .body{opacity:0;transition:opacity 1.6s ease}
-.letter.unlocked .body{opacity:1}
+.lw.unlocked .body{opacity:1}
 .letter .body p{font-size:1rem}
 
 .curtain{transition-duration:1.3s}
@@ -267,6 +267,25 @@ button.act{width:100%;max-width:300px;min-height:50px}
 .thought{bottom:calc(230px + env(safe-area-inset-bottom,0px))}
 .bubble{font-size:.95rem;padding:10px 16px}
 }
+/* happy face after forgiving */
+.cat .hp{display:none}
+.cat.glad .hp{display:inline}
+.cat.glad .eye,.cat.glad .sad{display:none}
+
+/* letter box: small when packed, grows when opened */
+.letter::before{content:none;display:none}
+.letter{padding:0;min-height:0}
+.lw{position:relative;overflow:hidden;border-radius:28px;padding:28px 24px;height:clamp(150px,27vh,220px);height:clamp(150px,27svh,220px);transition:height 3.2s cubic-bezier(.4,0,.2,1)}
+.paw{width:auto;height:88%;max-width:88%}
+.stamp{position:absolute;z-index:4;width:60px;height:70px;pointer-events:none;filter:drop-shadow(0 3px 0 rgba(122,53,80,.25))}
+.stamp.s1{top:-26px;right:14px;transform:rotate(6deg)}
+.stamp.s2{top:52px;right:-10px;width:50px;height:58px;transform:rotate(-7deg)}
+.cord2{transition:opacity .3s}
+@media(max-width:480px){
+.lw{padding:22px 18px}
+.lock .lbl{font-size:1.15rem;padding:6px 14px}
+#p2 .cat{width:min(180px,48vw)}
+}
 </style>
 </head>
 <body class="locked">
@@ -324,7 +343,8 @@ button.act{width:100%;max-width:300px;min-height:50px}
         <ellipse cx="75" cy="72" rx="58" ry="48" fill="#fff" stroke="#7a3550" stroke-width="4"/>
         <g id="eyes"><ellipse class="eye" cx="50" cy="72" rx="5" ry="7" fill="#7a3550"/><ellipse class="eye" cx="100" cy="72" rx="5" ry="7" fill="#7a3550"/></g>
         <ellipse cx="75" cy="84" rx="7" ry="5" fill="#ffc94d" stroke="#7a3550" stroke-width="2"/>
-        <path d="M66 98 q9 -9 18 0" fill="none" stroke="#7a3550" stroke-width="3" stroke-linecap="round"/>
+        <path class="sad" d="M66 98 q9 -9 18 0" fill="none" stroke="#7a3550" stroke-width="3" stroke-linecap="round"/>
+        <g class="hp"><path d="M43 74 q7 -11 14 0 M93 74 q7 -11 14 0" fill="none" stroke="#7a3550" stroke-width="4" stroke-linecap="round"/><path d="M63 93 q12 17 24 0z" fill="#ff8fb0" stroke="#7a3550" stroke-width="3" stroke-linejoin="round"/><ellipse cx="32" cy="88" rx="8" ry="5" fill="#ffb3cb" opacity=".85"/><ellipse cx="118" cy="88" rx="8" ry="5" fill="#ffb3cb" opacity=".85"/></g>
         <path d="M22 78 L2 74 M22 88 L2 92 M128 78 L148 74 M128 88 L148 92" stroke="#7a3550" stroke-width="3" stroke-linecap="round"/>
         <g transform="translate(112 24)"><g class="bow"><path d="M0 0 L-24 -14 L-24 14 Z M0 0 L24 -14 L24 14 Z" fill="#ff8fb0" stroke="#7a3550" stroke-width="3" stroke-linejoin="round"/><circle r="7" fill="#e8628a" stroke="#7a3550" stroke-width="3"/></g></g>
       </g>
@@ -333,11 +353,14 @@ button.act{width:100%;max-width:300px;min-height:50px}
   </section>
 
   <article class="letter">
+    <svg class="stamp s1" viewBox="0 0 60 70" aria-hidden="true"><defs><mask id="stm1"><rect width="60" height="70" fill="#fff"/><rect width="60" height="70" fill="none" stroke="#000" stroke-width="5" stroke-dasharray="0 10" stroke-linecap="round"/></mask></defs><g mask="url(#stm1)"><rect width="60" height="70" fill="#fff"/><rect x="5" y="5" width="50" height="60" rx="2" fill="#ffd1e0"/><g stroke="#7a3550" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M13 36 L11 15 L28 25Z M47 36 L49 15 L32 25Z" fill="#fff"/><ellipse cx="30" cy="40" rx="21" ry="16" fill="#fff"/><path d="M9 38 l-4 -1 M9 43 l-4 1 M51 38 l4 -1 M51 43 l4 1" fill="none" stroke-width="1.4"/></g><ellipse cx="21" cy="40" rx="2" ry="2.8" fill="#2b1722"/><ellipse cx="39" cy="40" rx="2" ry="2.8" fill="#2b1722"/><ellipse cx="30" cy="45" rx="3" ry="2" fill="#ffc94d" stroke="#7a3550" stroke-width="1.2"/><g transform="translate(43 24)"><path d="M0 0 L-9 -5 L-9 5Z M0 0 L9 -5 L9 5Z" fill="#ff6f9c" stroke="#7a3550" stroke-width="1.6" stroke-linejoin="round"/><circle r="2.8" fill="#ff3d78" stroke="#7a3550" stroke-width="1.6"/></g></g></svg><svg class="stamp s2" viewBox="0 0 60 70" aria-hidden="true"><defs><mask id="stm2"><rect width="60" height="70" fill="#fff"/><rect width="60" height="70" fill="none" stroke="#000" stroke-width="5" stroke-dasharray="0 10" stroke-linecap="round"/></mask></defs><g mask="url(#stm2)"><rect width="60" height="70" fill="#fff"/><rect x="5" y="5" width="50" height="60" rx="2" fill="#ffe3ec" stroke="#ffb6c8" stroke-width="1"/><g transform="translate(30 35)"><path d="M0 0 L-22 -13 Q-27 0 -22 13Z M0 0 L22 -13 Q27 0 22 13Z" fill="#ff6f9c" stroke="#7a3550" stroke-width="2" stroke-linejoin="round"/><g fill="#fff" opacity=".9"><circle cx="-15" cy="-4" r="1.8"/><circle cx="-14" cy="5" r="1.8"/><circle cx="15" cy="-4" r="1.8"/><circle cx="14" cy="5" r="1.8"/></g><rect x="-5" y="-8" width="10" height="16" rx="4" fill="#e8628a" stroke="#7a3550" stroke-width="2"/></g></g></svg>
+    <div class="lw" id="lw">
     <button class="lock" id="lock" aria-label="Press and hold to open the letter"><span class="lbl" id="lbl">Press here</span><svg class="paw" id="paw" viewBox="0 0 120 110" aria-hidden="true"><g fill="#ffa3c0"><ellipse cx="22" cy="46" rx="9" ry="12" transform="rotate(-20 22 46)"/><ellipse cx="43" cy="24" rx="9.5" ry="13" transform="rotate(-8 43 24)"/><ellipse cx="77" cy="24" rx="9.5" ry="13" transform="rotate(8 77 24)"/><ellipse cx="98" cy="46" rx="9" ry="12" transform="rotate(20 98 46)"/><path d="M60 50C38 50 22 74 25 89C28 104 44 101 60 99C76 101 92 104 95 89C98 74 82 50 60 50Z"/></g><text x="60" y="73" text-anchor="middle">yay, that</text><text x="60" y="84" text-anchor="middle">worked</text><text x="60" y="95" text-anchor="middle">now :D</text></svg></button>
     <div class="body">
       <h2>Hellu, Daina!</h2>
       <p>I know that I did something which you didn't like and you decided to stop talking with me that day. But I truly and from the bottom of my heart, am sorry for anything and everything I did which made you mad to that point. I really just care about only few replies a day and I dont have any bad intentions towards you, you have been acting a lil rude towards me and would stop talking more often and that's the only and primary reason why I even bought that up in the first place, I thought I can tell you that without questioning but if you dont like that that's completely okay and I will continue to remember that. I realise it's my fault and I should be careful with what I do, and I will, with no doubt from now be careful because I will make sure to not do anything which raises doubts on your side.</p>
-      <p>With that being said, I am asking for forgiveness, I will really be delighted and it will brighten my days ( which are going pretty bad :[ ) if you can take just some time out of your busy schedule to review my apology application, and maybe accept it too :))))</p>
+      <p>With that being said, I am asking for forgiveness, I will really be delighted and it will brighten my days ( which are going pretty bad :') if you can take just some time out of your busy schedule to review my apology application, and maybe accept it too :))))</p>
+    </div>
     </div>
   </article>
 
@@ -353,7 +376,7 @@ button.act{width:100%;max-width:300px;min-height:50px}
   <div id="p4" hidden>
   <div id="p4cat"></div>
   <section class="ask" id="ask">
-    <h2>Can we be friends again?</h2>
+    <h2>Do you forgive me?</h2>
     <div class="btns">
       <button class="act yes" id="yes">Yes, I forgive you</button>
       <button class="act no" id="no">Not yet</button>
@@ -407,7 +430,7 @@ addEventListener('pointermove',e=>{const r=$('cat').getBoundingClientRect();
 
 // no button
 const no=$('no');let tries=0;
-const msgs=['Not yet','Please?','Pretty please?','I\u2019ll bring snacks','Okay, just click yes'];
+const msgs=['Not yet','Please?','Pretty please?','You mean yes?','Okay, just click yes'];
 no.addEventListener('click',()=>{tries++;no.textContent=msgs[Math.min(tries,4)];$('yes').style.transform='scale('+Math.min(1+tries*.12,1.6)+')'});
 
 // yes
@@ -415,7 +438,7 @@ function hearts(){const em=['💗','🎀','🌸','💕','✨'];
   for(let i=0;i<26;i++){const h=document.createElement('span');h.className='heart';h.textContent=em[i%5];
     h.style.left=Math.random()*95+'vw';h.style.top=(60+Math.random()*35)+'vh';h.style.animationDelay=Math.random()*.7+'s';
     body.appendChild(h);setTimeout(()=>h.remove(),3000)}}
-$('yes').addEventListener('click',()=>{$('ask').style.display='none';$('done').classList.add('show');hearts();$('done').scrollIntoView({block:'center',behavior:'smooth'})});
+$('yes').addEventListener('click',()=>{const k=document.querySelector('#p4cat .cat');k&&k.classList.add('glad');$('ask').style.display='none';$('done').classList.add('show');hearts();$('done').scrollIntoView({block:'center',behavior:'smooth'})});
 
 let skip=false;
 const sleep=ms=>new Promise(r=>setTimeout(r,skip?0:ms));
@@ -486,7 +509,7 @@ async function catPull(front,kind,reveal,cleanup){
       if(stage===2){p3.hidden=false;p3.scrollTop=0;p3.classList.add('in3')}
       else{const k=$('cat').cloneNode(true);k.removeAttribute('id');$('p4cat').appendChild(k);p4.hidden=false;p4.scrollTop=0;p4.classList.add('in')}
     };
-    catPull(from,'paper',reveal,()=>{from.hidden=true;if(stage===2){stage=3;resetCord();setTimeout(()=>body.classList.add('stage2'),3000)}});
+    catPull(from,'paper',reveal,()=>{from.hidden=true;if(stage===2){stage=3;resetCord();setTimeout(()=>body.classList.add('stage2'),2500)}});
   }
   c.addEventListener('pointerdown',e=>{if(done)return;drag=true;y0=e.clientY;c.classList.add('drag');c.classList.remove('snap');c.setPointerCapture(e.pointerId)});
   c.addEventListener('pointermove',e=>{if(!drag)return;d=Math.max(0,Math.min(160,e.clientY-y0));ln.style.height=(base+d)+'px';fade(d/(need*.8));const h=Math.min(1,d/50);hint.style.opacity=1-h;hint.style.transform='translateX(-50%) scale('+(1-.3*h)+')'});
@@ -504,9 +527,13 @@ async function catPull(front,kind,reveal,cleanup){
   const setPaw=p=>{paw.style.opacity=p>0?1:0;paw.style.transform='translate(-50%,-50%) scale('+(.12+.88*p)+')'};
   function step(now){if(!holding)return;const p=Math.min(1,(now-t0)/3000);setPaw(p);if(p>=1){win();return}raf=requestAnimationFrame(step)}
   function win(){done=true;holding=false;lock.classList.remove('holding');lbl.style.opacity=0;paw.classList.add('win');
-    setTimeout(()=>{paw.classList.add('away');lock.classList.add('gone');lock.parentElement.classList.add('unlocked')},1600);
+    setTimeout(()=>{paw.classList.add('away');lock.classList.add('gone');
+      const lw=lock.parentElement,bd=lw.querySelector('.body'),cs=getComputedStyle(lw);
+      lw.classList.add('unlocked');
+      lw.style.height=(bd.offsetHeight+(parseFloat(getComputedStyle(bd.lastElementChild).marginBottom)||0)+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom))+'px';
+      lw.addEventListener('transitionend',function f(e){if(e.propertyName==='height'){lw.style.height='auto';lw.removeEventListener('transitionend',f)}})},1600);
     setTimeout(()=>{lock.style.display='none'},2600);
-    setTimeout(()=>body.classList.add('stage2'),3000)}
+    setTimeout(()=>body.classList.add('stage2'),2500)}
   function down(){if(done||holding)return;holding=true;if(taught){t0=performance.now();lock.classList.add('holding');raf=requestAnimationFrame(step)}}
   function up(){if(!holding||done)return;holding=false;cancelAnimationFrame(raf);lock.classList.remove('holding');
     if(!taught){taught=true;lock.classList.remove('shake');void lock.offsetWidth;lock.classList.add('shake');swap('oh no, that didnt work, can u try to HOLD >:)')}
